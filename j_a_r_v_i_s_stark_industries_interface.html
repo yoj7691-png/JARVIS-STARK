@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. // Stark HUD Cinematic OS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts: Orbitron & Rajdhani -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stark: {
+                            cyan: '#00f0ff',
+                            blue: '#0066ff',
+                            gold: '#ffb700',
+                            red: '#ff0033',
+                            dark: '#020611',
+                            panel: 'rgba(3, 16, 38, 0.75)'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #020611;
+            color: #00f0ff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 150, 255, 0.15) 0%, transparent 75%),
+                linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            transition: background 0.8s ease;
+        }
+
+        /* House Party Emergency Red Theme Overrides */
+        body.house-party-mode {
+            background-color: #120005;
+            color: #ff0033;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 51, 0.35) 0%, transparent 75%),
+                linear-gradient(rgba(255, 0, 51, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 51, 0.12) 1px, transparent 1px);
+            animation: red-alarm-pulse 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes red-alarm-pulse {
+            0% { box-shadow: inset 0 0 50px rgba(255, 0, 51, 0.2); }
+            100% { box-shadow: inset 0 0 150px rgba(255, 0, 51, 0.6); }
+        }
+
+        body.house-party-mode .stark-card {
+            border-color: rgba(255, 0, 51, 0.6) !important;
+            box-shadow: 0 0 25px rgba(255, 0, 51, 0.35), inset 0 0 20px rgba(255, 0, 51, 0.15) !important;
+        }
+
+        body.house-party-mode .text-stark-cyan { color: #ff0033 !important; }
+        body.house-party-mode .border-stark-cyan { border-color: #ff0033 !important; }
+        body.house-party-mode .bg-stark-cyan { background-color: #ff0033 !important; }
+
+        /* Movie HUD Stark Frame Card with Holographic Flickering */
+        .stark-card {
+            background: rgba(3, 16, 38, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 0 25px rgba(0, 240, 255, 0.08);
+            position: relative;
+            animation: hud-flicker 12s infinite alternate;
+        }
+
+        @keyframes hud-flicker {
+            0%, 95%, 98%, 100% { opacity: 1; }
+            96% { opacity: 0.88; transform: scale(0.999); }
+            97% { opacity: 0.96; }
+        }
+
+        .stark-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 14px;
+            height: 14px;
+            border-top: 2px solid #00f0ff;
+            border-left: 2px solid #00f0ff;
+            box-shadow: -2px -2px 8px #00f0ff;
+        }
+
+        .stark-card::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            border-bottom: 2px solid #00f0ff;
+            border-right: 2px solid #00f0ff;
+            box-shadow: 2px 2px 8px #00f0ff;
+        }
+
+        /* 3D Rotating Blueprint Wireframe */
+        .perspective-container {
+            perspective: 1000px;
+        }
+        
+        .wireframe-cube {
+            transform-style: preserve-3d;
+            animation: rotate3d 14s linear infinite;
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg); }
+            50% { transform: rotateX(-10deg) rotateY(180deg) rotateZ(10deg); }
+            100% { transform: rotateX(20deg) rotateY(360deg) rotateZ(0deg); }
+        }
+
+        /* Complex Cinematic Arc Reactor Animations */
+        @keyframes spin-cw {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-ccw {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes reactor-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 45px rgba(0, 240, 255, 0.75), inset 0 0 35px rgba(0, 240, 255, 0.85); 
+                filter: brightness(1);
+            }
+            50% { 
+                box-shadow: 0 0 90px rgba(0, 240, 255, 1), inset 0 0 65px rgba(0, 240, 255, 1); 
+                filter: brightness(1.35);
+            }
+        }
+
+        @keyframes core-plasma-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.08); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .spin-fast { animation: spin-cw 3s linear infinite; }
+        .spin-med { animation: spin-ccw 7s linear infinite; }
+        .spin-slow { animation: spin-cw 14s linear infinite; }
+        .reactor-glow { animation: reactor-pulse 2s ease-in-out infinite; }
+        .plasma-glow { animation: core-plasma-spin 8s ease-in-out infinite; }
+
+        /* Movie Tactical Target Lock Reticle Animation */
+        .target-reticle {
+            position: absolute;
+            pointer-events: none;
+            animation: target-lock 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes target-lock {
+            0% { transform: scale(3.5) rotate(180deg); opacity: 0; }
+            40% { opacity: 1; }
+            80% { transform: scale(0.95) rotate(-10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 0.95; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: rgba(2, 6, 17, 0.9); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.5); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.9); }
+
+        /* Holographic Scanline Wave */
+        .scanline {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.9), transparent);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+            position: absolute;
+            animation: scan 2.8s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0.1; }
+            50% { opacity: 0.85; }
+            100% { top: 100%; opacity: 0.1; }
+        }
+
+        /* Movie HUD Crosshair HUD overlay lines */
+        .hud-grid-overlay {
+            background-image: 
+                radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 240, 255, 0.05) 90%),
+                linear-gradient(0deg, transparent 49.5%, rgba(0, 240, 255, 0.07) 50%, transparent 50.5%),
+                linear-gradient(90deg, transparent 49.5%, rgba(0, 240, 255, 0.07) 50%, transparent 50.5%);
+        }
+
+        /* Holographic Subtitle HUD Overlay */
+        .hud-subtitle-box {
+            background: rgba(2, 6, 17, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.15);
+            animation: subtitle-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes subtitle-pop {
+            0% { transform: translateY(10px) scale(0.96); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 select-none relative hud-grid-overlay">
+
+    <!-- Top HUD Banner -->
+    <header class="w-full grid grid-cols-1 md:grid-cols-3 gap-3 items-center mb-3 z-10">
+        <!-- Telemetry Header Left -->
+        <div class="flex items-center space-x-3 text-xs tracking-wider">
+            <div class="h-3 w-3 rounded-full bg-stark-cyan animate-ping"></div>
+            <div>
+                <span class="font-orbitron font-extrabold text-stark-cyan tracking-widest flex items-center gap-2">
+                    STARK INDUSTRIES // MARK LXXXV
+                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-stark-cyan/20 border border-stark-cyan/40 animate-pulse">HUD 3.0</span>
+                </span>
+                <span id="hud-subhead" class="block text-stark-gold text-[10px] uppercase tracking-widest">PROYECCIÓN HOLOGRÁFICA // INTERFAZ DE CASCO MARK</span>
+            </div>
+        </div>
+
+        <!-- Center Movie Logo -->
+        <div class="text-center">
+            <h1 class="font-orbitron text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-stark-cyan via-white to-stark-blue">
+                J.A.R.V.I.S.
+            </h1>
+            <p class="text-[10px] tracking-widest text-stark-gold font-semibold uppercase">Just A Rather Very Intelligent System</p>
+        </div>
+
+        <!-- System Clock & Controls -->
+        <div class="flex justify-end items-center space-x-4 text-right">
+            <div>
+                <div id="clock-display" class="font-orbitron text-xl font-bold text-stark-cyan">00:00:00</div>
+                <div class="text-[10px] text-stark-gold tracking-widest uppercase">PROTOCOLO DE SEGURIDAD 01 // AUTORIZADO</div>
+            </div>
+            <button id="mute-btn" onclick="toggleMute()" class="stark-card p-2.5 text-stark-cyan hover:text-white transition">
+                <i id="mute-icon" class="fas fa-volume-up text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main HUD Grid Layout -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 items-center z-10">
+        
+        <!-- Left HUD Widgets: Armor Telemetry & 3D Model -->
+        <div class="lg:col-span-3 flex flex-col gap-4">
+            
+            <!-- Flight Systems & Armor Integrity -->
+            <div class="stark-card p-4 rounded-md">
+                <div class="flex justify-between items-center mb-2 border-b border-stark-cyan/30 pb-1">
+                    <span class="font-orbitron text-xs font-bold uppercase text-stark-cyan">Sistemas de Vuelo & Armadura</span>
+                    <span class="text-xs text-emerald-400 font-mono">98% INTEGRIDAD</span>
+                </div>
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1">
+                            <span>PROPULSORES DE PIES</span>
+                            <span class="text-stark-gold">100% OK</span>
+                        </div>
+                        <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-stark-cyan/30">
+                            <div class="bg-stark-cyan h-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1">
+                            <span>ESTABILIZADORES DE REPULSORES</span>
+                            <span class="text-stark-gold">98% OK</span>
+                        </div>
+                        <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-stark-cyan/30">
+                            <div class="bg-stark-cyan h-full" style="width: 98%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1">
+                            <span>ESCUDOS DE NANO-PARTÍCULAS</span>
+                            <span class="text-stark-gold">95% LISTO</span>
+                        </div>
+                        <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-stark-cyan/30">
+                            <div class="bg-stark-cyan h-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Wireframe Armor Model Widget -->
+            <div class="stark-card p-4 rounded-md relative overflow-hidden flex flex-col items-center">
+                <div class="scanline"></div>
+                <div class="w-full flex justify-between items-center mb-2 border-b border-stark-cyan/30 pb-1">
+                    <span class="font-orbitron text-xs font-bold uppercase text-stark-cyan">Modelo Táctico 3D Mark 85</span>
+                    <span class="text-[10px] text-stark-gold">ROTA 360°</span>
+                </div>
+                
+                <!-- 3D Geometric Blueprint Wireframe -->
+                <div class="w-36 h-36 my-3 perspective-container flex items-center justify-center">
+                    <div class="wireframe-cube w-24 h-24 relative flex items-center justify-center">
+                        <div class="absolute inset-0 border-2 border-stark-cyan/60 rounded-lg shadow-[0_0_15px_rgba(0,240,255,0.4)]"></div>
+                        <div class="absolute inset-2 border border-stark-gold/60 rounded-full rotate-45"></div>
+                        <div class="absolute inset-4 border border-stark-blue/80 rotate-90"></div>
+                        <i class="fas fa-user-shield text-4xl text-stark-cyan animate-pulse"></i>
+                    </div>
+                </div>
+                <div class="w-full flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span>ALT: 4,500m</span>
+                    <span>VEL: MACH 2.4</span>
+                    <span>PRES: 1.2 ATM</span>
+                </div>
+            </div>
+
+            <!-- Atmospheric & Core Telemetry -->
+            <div class="stark-card p-3 rounded-md">
+                <div class="flex justify-between items-center mb-1 text-xs">
+                    <span class="font-orbitron text-stark-cyan">TEMPERATURA NÚCLEO</span>
+                    <span id="temp-val" class="text-stark-gold font-mono">34.2 °C</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-orbitron text-stark-cyan">POTENCIA SALIDA</span>
+                    <span id="power-output-val" class="text-stark-cyan font-mono">1.21 GIGAVATIOS</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Center HUD Arc Reactor Core & Dynamic Reticle Overlay -->
+        <div class="lg:col-span-6 flex flex-col items-center justify-center relative min-h-[380px]">
+            
+            <!-- Dynamic Glowing Halo -->
+            <div id="reactor-halo" class="absolute w-80 h-80 md:w-[440px] md:h-[440px] rounded-full bg-stark-cyan/20 blur-3xl pointer-events-none transition-all duration-700"></div>
+
+            <!-- Movie-Accurate Arc Reactor Assembly with Multi-Layer Rotating Rings -->
+            <div id="arc-reactor" onclick="handleReactorClick()" class="relative w-72 h-72 md:w-96 md:h-96 flex items-center justify-center cursor-pointer group">
+                
+                <!-- Circular Spectrum Analyzer Bars around Perimeter -->
+                <div id="ring-visualizer" class="absolute inset-0 rounded-full flex items-center justify-center pointer-events-none">
+                    <!-- Segmented SVG visualizer ring -->
+                    <svg class="w-full h-full spin-slow" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1.5" stroke-dasharray="1, 4" />
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255, 183, 0, 0.4)" stroke-width="1" stroke-dasharray="3, 6" />
+                        <circle cx="50" cy="50" r="41" fill="none" stroke="rgba(0, 102, 255, 0.5)" stroke-width="1" stroke-dasharray="6, 12" />
+                    </svg>
+                </div>
+
+                <!-- Outer Segmented Tech Rings -->
+                <div class="absolute inset-0 rounded-full border border-stark-cyan/30 spin-cw"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-dashed border-stark-cyan/50 spin-cw"></div>
+                <div class="absolute inset-6 rounded-full border border-stark-blue/70 spin-ccw"></div>
+                
+                <!-- Inner Multi-Segment Metal Ring -->
+                <div class="absolute inset-10 rounded-full border-4 border-t-stark-cyan border-r-stark-gold border-b-stark-blue border-l-transparent spin-fast opacity-90"></div>
+                <div class="absolute inset-12 rounded-full border border-dotted border-stark-cyan/80 spin-ccw"></div>
+
+                <!-- Main Vibranium Arc Core Container -->
+                <div class="absolute inset-14 rounded-full border-8 border-slate-950 stark-card reactor-glow flex items-center justify-center overflow-hidden">
+                    <div class="w-full h-full rounded-full border border-stark-cyan/60 flex items-center justify-center relative plasma-glow">
+                        
+                        <!-- Tri-Segment Core Markings (Mark VI Tri-Core Style) -->
+                        <div class="absolute w-full h-1 bg-stark-cyan/40 rotate-0"></div>
+                        <div class="absolute w-full h-1 bg-stark-cyan/40 rotate-60"></div>
+                        <div class="absolute w-full h-1 bg-stark-cyan/40 rotate-120"></div>
+
+                        <!-- Core Glowing Energy Center -->
+                        <div id="arc-core-center" class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-r from-stark-cyan via-white to-stark-blue shadow-[0_0_75px_#00f0ff] flex items-center justify-center transition-all duration-500 group-hover:scale-110">
+                            <i id="core-icon" class="fas fa-atom text-5xl text-slate-950 animate-pulse"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Lock Container Overlay (Triggered by threat scan) -->
+            <div id="target-locks-layer" class="absolute inset-0 pointer-events-none z-20"></div>
+
+            <!-- Central Status Indicator Banner -->
+            <div class="mt-4 text-center z-10 w-full flex flex-col items-center">
+                <span id="jarvis-status-text" class="font-orbitron text-xs font-bold tracking-widest text-stark-cyan uppercase bg-stark-cyan/10 px-6 py-2 rounded-full border border-stark-cyan/40 shadow-[0_0_20px_rgba(0,240,255,0.25)] animate-pulse">
+                    ESTADO: EN LÍNEA // PROYECTOR HOLOGRÁFICO OPERATIVO
+                </span>
+
+                <!-- Cinematic Holographic Subtitles Banner -->
+                <div id="hud-subtitle-container" class="hud-subtitle-box mt-3 px-6 py-2.5 rounded-lg max-w-xl hidden transition-all duration-300">
+                    <div class="text-[10px] font-orbitron text-stark-gold tracking-widest uppercase mb-0.5 flex items-center gap-2">
+                        <i class="fas fa-microchip animate-spin"></i>
+                        <span>MODULADOR ACÚSTICO JARVIS HUD // AUDIO EN VIVO</span>
+                    </div>
+                    <p id="hud-subtitle-text" class="text-sm font-semibold text-white tracking-wide font-rajdhani italic">
+                        "A su servicio, Señor."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right HUD Widgets: Tactical Protocols & Real-Time Matrix Stream -->
+        <div class="lg:col-span-3 flex flex-col gap-4">
+            
+            <!-- Movie Action Protocols -->
+            <div class="stark-card p-4 rounded-md">
+                <div class="flex justify-between items-center mb-3 border-b border-stark-cyan/30 pb-1">
+                    <span class="font-orbitron text-xs font-bold uppercase text-stark-cyan">Protocolos Stark de Película</span>
+                    <i class="fas fa-shield-halved text-stark-gold text-xs"></i>
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <button onclick="triggerProtocol('houseparty')" class="stark-card p-2.5 text-left text-xs font-bold text-stark-red hover:bg-stark-red/20 border-stark-red/50 hover:border-stark-red transition flex items-center space-x-2">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <span>PROTOCOLO FIESTA EN LA CASA</span>
+                    </button>
+                    <button onclick="triggerProtocol('threat')" class="stark-card p-2 text-left text-xs text-stark-cyan hover:bg-stark-cyan/10 hover:border-stark-cyan transition flex items-center space-x-2">
+                        <i class="fas fa-crosshairs text-stark-gold"></i>
+                        <span>ESCANEAR AMENAZAS & BLANCOS</span>
+                    </button>
+                    <button onclick="triggerProtocol('power')" class="stark-card p-2 text-left text-xs text-stark-cyan hover:bg-stark-cyan/10 hover:border-stark-cyan transition flex items-center space-x-2">
+                        <i class="fas fa-bolt text-stark-gold"></i>
+                        <span>MAXIMIZAR ENERGÍA AL UNIRRAYO</span>
+                    </button>
+                    <button onclick="triggerProtocol('protocol11')" class="stark-card p-2 text-left text-xs text-stark-cyan hover:bg-stark-cyan/10 hover:border-stark-cyan transition flex items-center space-x-2">
+                        <i class="fas fa-rotate-left text-stark-cyan"></i>
+                        <span>REINICIAR PROTOCOLO 11</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Stream & Live System Matrix -->
+            <div class="stark-card p-3 rounded-md">
+                <div class="flex justify-between items-center mb-1 border-b border-stark-cyan/30 pb-1">
+                    <span class="font-orbitron text-xs font-bold uppercase text-stark-cyan">Matriz de Código Stark</span>
+                    <span class="text-[9px] text-emerald-400 font-mono">EJECUTANDO...</span>
+                </div>
+                <div id="code-matrix-stream" class="h-28 overflow-hidden font-mono text-[10px] text-stark-cyan/70 space-y-0.5 leading-tight">
+                    <!-- Dynamic code stream injected by JS -->
+                </div>
+            </div>
+
+            <!-- Voice Selection Config -->
+            <div class="stark-card p-3 rounded-md">
+                <label for="voice-select" class="block font-orbitron text-[10px] uppercase text-stark-cyan mb-1">Voz del Sintetizador JARVIS</label>
+                <select id="voice-select" class="w-full bg-slate-950 text-xs text-stark-cyan border border-stark-cyan/40 rounded p-1.5 focus:outline-none focus:border-stark-cyan">
+                    <option value="">Cargando voces del sistema...</option>
+                </select>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Interactive Dialogue & Command Console -->
+    <footer class="w-full z-10 max-w-5xl mx-auto mt-2">
+        <!-- Communication History Window -->
+        <div class="stark-card rounded-md p-3 mb-3 h-40 overflow-y-auto flex flex-col space-y-2 text-sm" id="chat-history">
+            <div class="text-xs text-stark-cyan/70 border-b border-stark-cyan/20 pb-1 flex justify-between items-center">
+                <span><i class="fas fa-terminal mr-2"></i>CONSOLA DE COMUNICACIÓN STARK JARVIS</span>
+                <span class="text-[10px] text-stark-gold">MODO CINEMÁTICO ACTIVO</span>
+            </div>
+            <div class="flex flex-col text-xs text-stark-cyan">
+                <span class="font-orbitron text-[10px] text-stark-gold">J.A.R.V.I.S.:</span>
+                <span>A su servicio, Señor. Todos los sistemas del traje están alineados. ¿Qué órdenes tiene para hoy?</span>
+            </div>
+        </div>
+
+        <!-- Input Bar & Voice Controls -->
+        <div class="flex items-center space-x-2">
+            <!-- Voice Input Mic Button -->
+            <button id="mic-btn" onclick="toggleSpeechRecognition()" class="stark-card p-3 text-stark-cyan hover:bg-stark-cyan/20 hover:border-stark-cyan rounded-md transition flex items-center justify-center">
+                <i id="mic-icon" class="fas fa-microphone text-lg"></i>
+            </button>
+
+            <!-- Text Command Input -->
+            <div class="relative flex-1">
+                <input type="text" id="user-input" onkeydown="handleKeyPress(event)" placeholder="Ingrese orden para J.A.R.V.I.S. (ej: 'Escanear área', 'Estado del traje')..." class="w-full bg-slate-950/90 border border-stark-cyan/50 text-stark-cyan text-sm rounded-md px-4 py-3 focus:outline-none focus:border-stark-cyan focus:ring-1 focus:ring-stark-cyan placeholder-stark-cyan/40 font-rajdhani">
+            </div>
+
+            <!-- Execute Action Button -->
+            <button onclick="sendUserMessage()" class="stark-card px-6 py-3 font-orbitron text-xs font-bold text-slate-950 bg-stark-cyan hover:bg-white hover:shadow-[0_0_20px_#00f0ff] rounded-md transition uppercase tracking-wider">
+                Ejecutar
+            </button>
+        </div>
+    </footer>
+
+    <!-- Sci-Fi Application Engine -->
+    <script>
+        /* -------------------------------------------------------------
+           Reactor Click & Target Locks (Cinematic Animations)
+        ------------------------------------------------------------- */
+        function handleReactorClick() {
+            playSciFiSound('repulsor');
+            playSciFiSound('pulse');
+
+            const coreCenter = document.getElementById('arc-core-center');
+            const halo = document.getElementById('reactor-halo');
+
+            if (coreCenter) {
+                coreCenter.classList.add('scale-125', 'brightness-150');
+                if (halo) halo.style.transform = 'scale(1.25)';
+                
+                setTimeout(() => {
+                    coreCenter.classList.remove('scale-125', 'brightness-150');
+                    if (halo) halo.style.transform = 'scale(1)';
+                }, 500);
+            }
+
+            const responses = [
+                "Núcleo de arco operando a máxima capacidad, Señor.",
+                "Redireccionando pulso de plasma a los propulsores primarios.",
+                "Sistemas de vibranium alineados. ¿Ejecuto diagnóstico de combate?",
+                "Energía del traje lista para disparo directo o maniobras supersónicas."
+            ];
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            appendChatMessage("J.A.R.V.I.S.", response);
+            speakJarvis(response);
+        }
+
+        /* -------------------------------------------------------------
+           Stark Protocols Handler (Movie Animations)
+        ------------------------------------------------------------- */
+        function triggerProtocol(type) {
+            if (type === 'houseparty') {
+                document.body.classList.toggle('house-party-mode');
+                playSciFiSound('alarm');
+                const isHouseParty = document.body.classList.contains('house-party-mode');
+                const text = isHouseParty 
+                    ? "Protocolo Fiesta en la Casa activado. Desplegando legión de armaduras Stark." 
+                    : "Protocolo Fiesta en la Casa desactivado. Volviendo al estado de defensa primario.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            } else if (type === 'threat') {
+                playSciFiSound('chirp');
+                spawnTargetLocks();
+                const text = "Analizando sector... Se detectan 3 blancos tácticos. Fijando retículas de fijación en el HUD.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            } else if (type === 'power') {
+                playSciFiSound('repulsor');
+                const powerVal = document.getElementById('power-output-val');
+                if (powerVal) powerVal.innerText = "4.75 GIGAVATIOS (MAX)";
+                
+                const coreCenter = document.getElementById('arc-core-center');
+                if (coreCenter) {
+                    coreCenter.classList.add('shadow-[0_0_120px_#00f0ff]', 'scale-110');
+                }
+
+                const text = "Canalizando energía completa hacia el Unirrayo del pecho. Capacidad de fuego máxima lista.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+
+                setTimeout(() => {
+                    if (powerVal) powerVal.innerText = "1.21 GIGAVATIOS";
+                    if (coreCenter) coreCenter.classList.remove('shadow-[0_0_120px_#00f0ff]', 'scale-110');
+                }, 6000);
+            } else if (type === 'protocol11') {
+                playSciFiSound('pulse');
+                const text = "Ejecutando secuencia de reinicio de Protocolo 11. Recalibrando sensores holográficos y HUD.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            }
+        }
+
+        function spawnTargetLocks() {
+            const container = document.getElementById('target-locks-layer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 3; i++) {
+                const reticle = document.createElement('div');
+                reticle.className = 'target-reticle w-24 h-24 flex items-center justify-center';
+                
+                // Movie Accurate Locked Reticle Design
+                reticle.innerHTML = `
+                    <div class="w-full h-full border-2 border-stark-red border-dashed rounded-full animate-spin"></div>
+                    <div class="absolute w-3/4 h-3/4 border border-stark-gold rounded-full"></div>
+                    <div class="absolute w-2 h-2 bg-stark-red rounded-full animate-ping"></div>
+                    <span class="absolute -bottom-5 text-[9px] font-mono text-stark-red tracking-widest font-bold">BLANCO_0${i+1} [LOCK]</span>
+                `;
+
+                const top = 15 + Math.random() * 65;
+                const left = 15 + Math.random() * 65;
+                reticle.style.top = `${top}%`;
+                reticle.style.left = `${left}%`;
+                container.appendChild(reticle);
+            }
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSciFiSound(type) {
+            if (isMuted) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'chirp') {
+                    // Tactical UI activation chirp
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1400, now);
+                    osc.frequency.exponentialRampToValueAtTime(2800, now + 0.05);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'pulse') {
+                    // Arc Reactor deep hum pulse
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+                    gain.gain.setValueAtTime(0.35, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'repulsor') {
+                    // High-tech suit repulsor charge sound
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(350, now);
+                    osc.frequency.exponentialRampToValueAtTime(2100, now + 0.42);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                } else if (type === 'alarm') {
+                    // Emergency house party siren
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.linearRampToValueAtTime(1200, now + 0.2);
+                    osc.frequency.linearRampToValueAtTime(600, now + 0.4);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                }
+            } catch (e) {
+                console.log("Audio Notice:", e);
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('mute-icon');
+            if (isMuted) {
+                icon.className = 'fas fa-volume-mute text-stark-red';
+            } else {
+                icon.className = 'fas fa-volume-up text-stark-cyan';
+                playSciFiSound('chirp');
+            }
+        }
+
+        /* -------------------------------------------------------------
+           Movie Text-To-Speech Synthesis Engine & Acoustic Filters
+        ------------------------------------------------------------- */
+        let synth = window.speechSynthesis;
+        let voices = [];
+        const voiceSelect = document.getElementById('voice-select');
+
+        function populateVoices() {
+            if (!synth) return;
+            voices = synth.getVoices();
+            if (!voices.length) return;
+            
+            voiceSelect.innerHTML = '<option value="">Voz Predeterminada J.A.R.V.I.S. (Cinemática)</option>';
+            
+            // Prioritize refined male Spanish voices (Carlos, Jorge, Raul, Pablo, etc.)
+            const preferredVoices = ['carlos', 'jorge', 'raul', 'pablo', 'miguel', 'enrique', 'diego', 'spanish', 'es-es', 'es-mx'];
+
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                
+                const nameLower = voice.name.toLowerCase();
+                const langLower = voice.lang.toLowerCase();
+                
+                if (preferredVoices.some(v => nameLower.includes(v) || langLower.includes(v))) {
+                    option.textContent += ' ★ Recomendada (JARVIS Stark)';
+                }
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (synth) {
+            populateVoices();
+            if (synth.onvoiceschanged !== undefined) {
+                synth.onvoiceschanged = populateVoices;
+            }
+        }
+
+        function startVoiceVisualizer() {
+            const center = document.getElementById('arc-core-center');
+            const halo = document.getElementById('reactor-halo');
+            
+            if (visualizerInterval) clearInterval(visualizerInterval);
+
+            visualizerInterval = setInterval(() => {
+                const randomScale = 1 + Math.random() * 0.18;
+                const randomBlur = 40 + Math.random() * 40;
+                center.style.transform = `scale(${randomScale})`;
+                halo.style.filter = `blur(${randomBlur}px)`;
+            }, 90);
+        }
+
+        function stopVoiceVisualizer() {
+            if (visualizerInterval) clearInterval(visualizerInterval);
+            const center = document.getElementById('arc-core-center');
+            const halo = document.getElementById('reactor-halo');
+            center.style.transform = 'scale(1)';
+            halo.style.filter = 'blur(24px)';
+        }
+
+        function speakJarvis(text) {
+            if (!synth || isMuted) return;
+            try {
+                synth.cancel(); // Clear speech queue
+
+                const cleanText = text.replace(/[*_#]/g, '');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                
+                // Deep, articulate baritone settings for Betany/Segundo style JARVIS voice
+                utterance.pitch = 0.88; 
+                utterance.rate = 0.95;  
+
+                const selectedIdx = voiceSelect.value;
+                if (selectedIdx !== "" && voices[selectedIdx]) {
+                    utterance.voice = voices[selectedIdx];
+                } else if (voices.length > 0) {
+                    // Automatic smart selection for deep Spanish male voice
+                    const jarvisVoice = voices.find(v => {
+                        const n = v.name.toLowerCase();
+                        const l = v.lang.toLowerCase();
+                        return (l.includes('es') || n.includes('spanish')) && 
+                               (n.includes('carlos') || n.includes('jorge') || n.includes('raul') || n.includes('pablo') || n.includes('male') || n.includes('hombre'));
+                    }) || voices.find(v => v.lang.includes('es'));
+
+                    if (jarvisVoice) utterance.voice = jarvisVoice;
+                }
+
+                // Subtitle HUD element
+                const subContainer = document.getElementById('hud-subtitle-container');
+                const subText = document.getElementById('hud-subtitle-text');
+
+                utterance.onstart = () => {
+                    initAudio();
+                    playSciFiSound('chirp');
+                    updateStatus('J.A.R.V.I.S. TRANSMITIENDO RESPUESTA VOCAL (FILTRO HUD)');
+                    startVoiceVisualizer();
+                    
+                    subText.innerText = `"${cleanText}"`;
+                    subContainer.classList.remove('hidden');
+                };
+
+                utterance.onend = () => {
+                    stopVoiceVisualizer();
+                    subContainer.classList.add('hidden');
+                    updateStatus('ESTADO: EN LÍNEA // LISTO PARA INSTRUCCIONES');
+                };
+
+                utterance.onerror = () => {
+                    stopVoiceVisualizer();
+                    subContainer.classList.add('hidden');
+                    updateStatus('ESTADO: EN LÍNEA // LISTO PARA INSTRUCCIONES');
+                };
+
+                synth.speak(utterance);
+            } catch(e) {
+                console.log("Speech Engine Notice:", e);
+            }
+        }
+
+        /* -------------------------------------------------------------
+           Live Code Stream Matrix Display
+        ------------------------------------------------------------- */
+        const matrixContainer = document.getElementById('code-matrix-stream');
+
+        const matrixLines = [
+            "STARK_OS_KERNEL::INIT_VIBRANIUM_CORE()",
+            "REPULSOR_POWER::ALIGNING_STABILIZERS...",
+            "DIAGNOSTIC::MARK_85_SHIELD_GRID_OPTIMAL",
+            "NEURAL_LINK::SYNCING_GEMINI_AI_CLUSTER",
+            "HUD_RENDERER::CYAN_SPECTRA_ACTIVE",
+            "SECURITY::PROTOCOL_01_VERIFIED",
+            "TELEMETRY::ALTITUDE_4500M_STABLE",
+            "AUDIO_SYNTH::ACOUSTIC_FILTER_ENGAGED"
+        ];
+
+        let lineIdx = 0;
+        setInterval(() => {
+            if (matrixContainer) {
+                const p = document.createElement('div');
+                p.textContent = `> ${matrixLines[lineIdx % matrixLines.length]}`;
+                matrixContainer.appendChild(p);
+                if (matrixContainer.children.length > 7) {
+                    matrixContainer.removeChild(matrixContainer.firstChild);
+                }
+                lineIdx++;
+            }
+        }, 1200);
+
+        /* -------------------------------------------------------------
+           UI & Interaction Helpers
+        ------------------------------------------------------------- */
+        function updateStatus(message) {
+            const statusEl = document.getElementById('jarvis-status-text');
+            if (statusEl) {
+                statusEl.innerText = message;
+            }
+        }
+
+        function appendChatMessage(sender, text) {
+            const chatHistory = document.getElementById('chat-history');
+            if (!chatHistory) return;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex flex-col text-xs my-1';
+            
+            const isJarvis = sender.toUpperCase().includes('JARVIS') || sender.toUpperCase().includes('J.A.R.V.I.S.');
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.className = `font-orbitron text-[10px] ${isJarvis ? 'text-stark-gold' : 'text-stark-cyan'}`;
+            titleSpan.textContent = `${sender}:`;
+
+            const textSpan = document.createElement('span');
+            textSpan.className = isJarvis ? 'text-stark-cyan' : 'text-white';
+            textSpan.textContent = text;
+
+            msgDiv.appendChild(titleSpan);
+            msgDiv.appendChild(textSpan);
+
+            chatHistory.appendChild(msgDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        /* -------------------------------------------------------------
+           Reactor Click & Target Locks
+        ------------------------------------------------------------- */
+        function handleReactorClick() {
+            playSciFiSound('repulsor');
+            playSciFiSound('pulse');
+
+            const coreCenter = document.getElementById('arc-core-center');
+            if (coreCenter) {
+                coreCenter.classList.add('scale-125');
+                setTimeout(() => coreCenter.classList.remove('scale-125'), 400);
+            }
+
+            const responses = [
+                "Núcleo de arco al 100% de capacidad, Señor.",
+                "Redireccionando pulso de energía a los propulsores primarios.",
+                "Sistemas de vibranium estables. ¿Desea ejecutar un escaneo completo?",
+                "Energía del traje lista para combate o vuelo supersónico."
+            ];
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            appendChatMessage("J.A.R.V.I.S.", response);
+            speakJarvis(response);
+        }
+
+        /* -------------------------------------------------------------
+           Stark Protocols Handler
+        ------------------------------------------------------------- */
+        function triggerProtocol(type) {
+            if (type === 'houseparty') {
+                document.body.classList.toggle('houseparty-mode');
+                playSciFiSound('alarm');
+                const isHouseParty = document.body.classList.contains('houseparty-mode');
+                const text = isHouseParty 
+                    ? "Protocolo Fiesta en la Casa activado. Todas las armaduras desplegadas y en posición de combate." 
+                    : "Protocolo Fiesta en la Casa desactivado. Volviendo a modo de seguridad estándar.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            } else if (type === 'threat') {
+                playSciFiSound('chirp');
+                spawnTargetLocks();
+                const text = "Escaneando perímetro... Se detectan 3 objetivos tácticos. Marcadores fijados en el HUD.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            } else if (type === 'power') {
+                playSciFiSound('repulsor');
+                const powerVal = document.getElementById('power-output-val');
+                if (powerVal) powerVal.innerText = "4.75 GIGAVATIOS (MAX)";
+                const text = "Energía desviada exitosamente al Unirrayo del pecho, Señor. Máxima capacidad de disparo lista.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+                setTimeout(() => {
+                    if (powerVal) powerVal.innerText = "1.21 GIGAVATIOS";
+                }, 6000);
+            } else if (type === 'protocol11') {
+                playSciFiSound('pulse');
+                const text = "Iniciando secuencia de reinicio Protocolo 11. Limpiando buffers de memoria y re-alineando sensores.";
+                appendChatMessage("J.A.R.V.I.S.", text);
+                speakJarvis(text);
+            }
+        }
+
+        function spawnTargetLocks() {
+            const container = document.getElementById('target-locks-layer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 3; i++) {
+                const reticle = document.createElement('div');
+                reticle.className = 'target-reticle w-16 h-16';
+                const top = 20 + Math.random() * 60;
+                const left = 20 + Math.random() * 60;
+                reticle.style.top = `${top}%`;
+                reticle.style.left = `${left}%`;
+                container.appendChild(reticle);
+            }
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        /* -------------------------------------------------------------
+           Speech Recognition (STT) Integration
+        ------------------------------------------------------------- */
+        let recognition = null;
+        let isRecognizing = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'es-ES';
+
+            recognition.onstart = () => {
+                isRecognizing = true;
+                const micIcon = document.getElementById('mic-icon');
+                if (micIcon) micIcon.className = 'fas fa-microphone-alt text-lg text-stark-red animate-pulse';
+                updateStatus('J.A.R.V.I.S. ESCUCHANDO SU ORDEN...');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const userInput = document.getElementById('user-input');
+                if (userInput) userInput.value = transcript;
+                sendUserMessage();
+            };
+
+            recognition.onerror = () => {
+                stopRecognition();
+            };
+
+            recognition.onend = () => {
+                stopRecognition();
+            };
+        }
+
+        function stopRecognition() {
+            isRecognizing = false;
+            const micIcon = document.getElementById('mic-icon');
+            if (micIcon) micIcon.className = 'fas fa-microphone text-lg text-stark-cyan';
+            updateStatus('ESTADO: EN LÍNEA // CONEXIÓN RED NEURONAL STARK');
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                appendChatMessage("J.A.R.V.I.S.", "El reconocimiento de voz no está soportado en este navegador.");
+                return;
+            }
+            if (isRecognizing) {
+                recognition.stop();
+            } else {
+                initAudio();
+                playSciFiSound('chirp');
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+
+        /* -------------------------------------------------------------
+           Message Dispatch & Local Smart Engine
+        ------------------------------------------------------------- */
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendUserMessage();
+            }
+        }
+
+        function sendUserMessage() {
+            const userInput = document.getElementById('user-input');
+            if (!userInput) return;
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            playSciFiSound('chirp');
+            appendChatMessage("SEÑOR STARK", text);
+            userInput.value = '';
+
+            processLocalCommand(text);
+        }
+
+        function processLocalCommand(query) {
+            const q = query.toLowerCase();
+            let response = "";
+
+            if (q.includes('hola') || q.includes('saludos') || q.includes('jarvis')) {
+                response = "Saludos, Señor. Todos los sistemas del Mark 85 responden con total precisión.";
+            } else if (q.includes('escaneo') || q.includes('amenaza') || q.includes('blancos') || q.includes('enemigo')) {
+                triggerProtocol('threat');
+                return;
+            } else if (q.includes('fiesta') || q.includes('casa') || q.includes('emergencia')) {
+                triggerProtocol('houseparty');
+                return;
+            } else if (q.includes('energia') || q.includes('energía') || q.includes('potencia') || q.includes('unirrayo')) {
+                triggerProtocol('power');
+                return;
+            } else if (q.includes('estado') || q.includes('traje') || q.includes('armadura') || q.includes('diagnostico') || q.includes('diagnóstico')) {
+                response = "Integridad de la armadura al 98%. Estabilizadores de vuelo al 100% y escudos de nanopartículas cargados.";
+            } else if (q.includes('quien eres') || q.includes('quién eres') || q.includes('quien sos')) {
+                response = "Soy J.A.R.V.I.S., su asistente de inteligencia artificial personal creado por Stark Industries.";
+            } else {
+                const defaultResponses = [
+                    "Comprendido, Señor. Procesando la solicitud a través del servidor central de Stark Industries.",
+                    "Analizando variables tácticas. Todos los parámetros se mantienen estables.",
+                    "Ajuste ejecutado, Señor. ¿Desea alguna telemetría adicional en la pantalla del HUD?"
+                ];
+                response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+
+            appendChatMessage("J.A.R.V.I.S.", response);
+            speakJarvis(response);
+        }
+
+        /* Clock Update */
+        setInterval(() => {
+            const clockEl = document.getElementById('clock-display');
+            if (clockEl) {
+                const now = new Date();
+                clockEl.innerText = now.toTimeString().split(' ')[0];
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
